@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+    <h1>Welcome to the Library</h1>
+
+    <p><a href="{{ url_for('add_author') }}">Add Author</a> | <a href="{{ url_for('add_book') }}">Add Book</a></p>
+
+    <h2>Books</h2>
+
+    <p>Sort by:
+        <a href="{{ url_for('home', sort_by='title') }}">Title</a> |
+        <a href="{{ url_for('home', sort_by='author') }}">Author</a>
+    </p>
+
+    <form method="post">
+        <input type="text" name="search_term" value="{{ search_term or '' }}">
+        <input type="submit" value="Search">
+    </form>
+
+    {% if message %}
+        <p style="color: red;">{{ message }}</p>
+    {% endif %}
+
+    <ul>
+        {% for book in books %}
+            <li>
+                {{ book.title }} by {{ book.author.name }}
+                <form action="{{ url_for('delete_book', book_id=book.id) }}" method="post" style="display: inline;">
+                    <input type="submit" value="Delete Book">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
